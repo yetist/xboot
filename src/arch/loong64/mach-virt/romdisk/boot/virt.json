@@ -1,0 +1,68 @@
+{
+  "clk-fixed": {
+    "name": "clkout32k",
+    "rate": 32768
+  },
+  "clk-fixed": {
+    "name": "clkout25m",
+    "rate": 25000000
+  },
+  "clk-fixed": {
+    "name": "clkout33m",
+    "rate": 33300000
+  },
+  "clk-fixed": {
+    "name": "clkout50m",
+    "rate": 50000000
+  },
+  "clk-fixed": {
+    "name": "clkout100m",
+    "rate": 100000000
+  },
+  "uart-16550@0x1fe001e0": {
+    "clock-name": "clkout50m",
+    "txd-gpio": -1,
+    "txd-gpio-config": -1,
+    "rxd-gpio": -1,
+    "rxd-gpio-config": -1,
+    "baud-rates": 115200,
+    "data-bits": 8,
+    "parity-bits": 0,
+    "stop-bits": 1
+  },
+  "uart-16550@0x1fe002e0": {
+    "clock-name": "clkout50m",
+    "txd-gpio": -1,
+    "txd-gpio-config": -1,
+    "rxd-gpio": -1,
+    "rxd-gpio-config": -1,
+    "baud-rates": 115200,
+    "data-bits": 8,
+    "parity-bits": 0,
+    "stop-bits": 1
+  },
+  "uart-16550@0x1fe003e0": {
+    "clock-name": "clkout50m",
+    "txd-gpio": -1,
+    "txd-gpio-config": -1,
+    "rxd-gpio": -1,
+    "rxd-gpio-config": -1,
+    "baud-rates": 115200,
+    "data-bits": 8,
+    "parity-bits": 0,
+    "stop-bits": 1
+  },
+  "console-uart": {
+    "uart-bus": "uart-16550.0"
+  },
+  "timer-loongarch@0": {
+    "name": "timer-loongarch"
+  },
+  "fb-generic@0": {
+    "name": "fb-generic",
+    "width": 800,
+    "height": 600,
+    "paddr": "0x2c000000",
+    "vaddr": "0x2c000000"
+  }
+}
