@@ -26,6 +26,9 @@
  * SOFTWARE.
  */
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -1377,3 +1380,5 @@ pixman_image_create_bits_no_clear (pixman_format_code_t format,
     return create_bits_image_internal (
 	format, width, height, bits, rowstride_bytes, FALSE);
 }
+
+#pragma GCC diagnostic pop

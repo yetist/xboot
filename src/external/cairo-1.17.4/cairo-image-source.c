@@ -42,6 +42,9 @@
  * compositor interface.
  */
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wincompatible-pointer-types"
+
 #include "cairoint.h"
 
 #include "cairo-image-surface-private.h"
@@ -1649,3 +1652,5 @@ _cairo_image_source_create_for_pattern (cairo_surface_t *dst,
 
     return &source->base;
 }
+
+#pragma GCC diagnostic pop
