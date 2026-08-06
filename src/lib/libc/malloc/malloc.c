@@ -21,7 +21,7 @@
 #define tlsf_assert				assert
 #define tlsf_insist(x)			{ tlsf_assert(x); if (!(x)) { status--; } }
 
-#if defined(__ARM64__) || defined(__X64__) || (defined(__riscv) && (__riscv_xlen == 64))
+#if defined(__ARM64__) || defined(__X64__) || (defined(__riscv) && (__riscv_xlen == 64)) || defined(__loongarch_lp64)
 # define TLSF_64BIT
 #else
 # undef TLSF_64BIT

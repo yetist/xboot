@@ -75,6 +75,9 @@ endif
 ifeq ($(strip $(ARCH)), riscv64)
 DEFINES		+=	-D__RISCV64__
 endif
+ifeq ($(strip $(ARCH)), loong64)
+DEFINES		+=	-D__LOONG64__
+endif
 ifeq ($(strip $(ARCH)), x64)
 DEFINES		+=	-D__X64__
 endif
