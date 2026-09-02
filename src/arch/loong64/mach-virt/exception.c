@@ -112,7 +112,7 @@ void loong64_handle_exception(struct pt_regs_t * regs)
 	//csr_write(LOONGARCH_CSR_SAVE0, (virtual_addr_t)regs);
   show_regs(regs);
 
-  //uint64_t era = regs->era;
-  //era += 4;
-	//csr_write(LOONGARCH_CSR_ERA, era);
+  uint64_t era = regs->era;
+  era += 4;
+	csr_write(LOONGARCH_CSR_ERA, era);
 }

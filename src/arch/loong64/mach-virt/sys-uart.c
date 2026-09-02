@@ -15,6 +15,13 @@
 
 void sys_uart_init(void)
 {
+  /* 16550 硬件寄存器初始化 */
+  write8(UART_BASE_ADDR + 3, 0x83);
+  write8(UART_BASE_ADDR + 0, 0x03);
+  write8(UART_BASE_ADDR + 1, 0x00);
+  write8(UART_BASE_ADDR + 3, 0x03);
+  write8(UART_BASE_ADDR + 1, 0x00);
+  write8(UART_BASE_ADDR + 2, 0x01);
 }
 
 void uart_putchar(char ch) {

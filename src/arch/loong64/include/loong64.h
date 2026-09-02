@@ -9,6 +9,9 @@
 extern "C" {
 #endif
 
+#define IO_BASE (0x8000ULL << 48)
+#define UNCACHE_BASE  IO_BASE
+
 #define LOONGARCH_CSR_CRMD    0x0     /* 当前运行模式与全局中断控制寄存器 */
 #define LOONGARCH_CSR_PRMD    0x1     /* 异常前状态寄存器 */
 #define LOONGARCH_CSR_EUEN    0x2     /* 扩展部件使能寄存器（FPU 硬件使能） */
