@@ -19,14 +19,6 @@ struct pt_regs_t {
 	unsigned long badi;
 };
 
-//#define LOONGARCH_CSR_ECFG    0x4
-//#define LOONGARCH_CSR_ESTAT   0x5
-//#define LOONGARCH_CSR_ERA     0x6
-//#define LOONGARCH_CSR_BADV    0x7
-//#define LOONGARCH_CSR_BADI    0x8
-//#define LOONGARCH_CSR_EENTRY  0xc
-//#define LOONGARCH_CSR_SAVE0   0x30
-
 #define ESTAT_ECOCD_MASK    0x3f0000
 #define ESTAT_ESUBCOCD_MASK 0x7fc00000
 #define ESTAT_ECODE_SYS     0xb
@@ -110,7 +102,13 @@ static void show_regs(struct pt_regs_t * regs)
 void loong64_handle_exception(struct pt_regs_t * regs)
 {
 	//csr_write(LOONGARCH_CSR_SAVE0, (virtual_addr_t)regs);
-  show_regs(regs);
+
+  uint8_t ecode = (regs->estat & ESTAT_ECOCD_MASK) >> 16;
+  if (ecode != 0) {
+    show_regs(regs);
+  } else {
+    LOG("Interrupt\n");
+  }
 
   uint64_t era = regs->era;
   era += 4;

@@ -66,6 +66,12 @@
     "parity-bits": 0,
     "stop-bits": 1
   },
+  "ce-loongarch-timer": {
+    "clock-name": "clkout100m",
+    "name": "ce-loongarch-timer",
+    "clock-frequency": 100000000, // 根据 QEMU 虚拟环境或实际芯片的配置调整
+    "interrupt-number": 11 // 对应 LoongArch 的核内定时器中断号
+  },
   "rtc-ls7a@0x100d0100": {
     "clock-name": "clkout32k"
   },

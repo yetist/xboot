@@ -50,7 +50,6 @@ extern "C" {
 
 #define csr_write(csr, val)                           \
     do {                                              \
-        uint64_t __tmp = (val);                       \
 	      unsigned long __v = (unsigned long)(val);     \
         __asm__ __volatile__("csrwr %0, " TO_STR(csr) \
         ::"r"(__v)                                    \

@@ -19,6 +19,7 @@ SECTIONS
 		PROVIDE(__image_start = .);
 		PROVIDE(__text_start = .);
         .obj/arch/loong64/mach-virt/start.o (.text*)
+        .obj/arch/loong64/mach-virt/sys-smp.o (.text*)
         *(.text*)
         *(.init.text)
         *(.exit.text)

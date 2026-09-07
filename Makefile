@@ -16,7 +16,7 @@ dump:
 	loongarch64-linux-gnu-objdump -d output/xboot > output/xboot.objdump
 
 run: dump
-	qemu-system-loongarch64 -m 2G -smp 4 -vga none -nographic -M virt -cpu max -rtc base=localtime -kernel output/xboot
+	qemu-system-loongarch64 -m 2G -smp 4 -vga none -nographic -M virt -cpu max -rtc base=localtime -serial mon:stdio -kernel output/xboot
 
 debug: dump
 	qemu-system-loongarch64 -m 2G -smp 4 -vga none -nographic -M virt -cpu max -rtc base=localtime -S -gdb tcp::1234,ipv4 -kernel output/xboot

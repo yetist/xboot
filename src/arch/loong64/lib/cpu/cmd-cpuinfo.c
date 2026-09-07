@@ -1,5 +1,8 @@
 /*
- * cmd-cpuinfo.c
+ * SPDX-FileType: SOURCE
+ * SPDX-FileCopyrightText: Copyright (c) 2026 Xiaotian Wu <yetist@gmail.com>
+ * SPDX-FileContributor: Modified by Xiaotian Wu
+ * SPDX-License-Identifier: GPL-2.0-or-later
  */
 
 #include <xboot.h>
@@ -11,17 +14,11 @@
 char buf[128];
 static char* to_binstr(uint64_t num)
 {
-  //0b1000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
-  //  putchar('0');
-  //  putchar('b');
-    //char* buf = malloc(128);
     memset(buf, 0, sizeof(buf));
-    //char buf[128];
     strcat(buf, "0b");
 
     // 如果是 0，直接打印并返回
     if (num == 0) {
-        //putchar('0');
         strcat(buf, "0");
         return buf;
     }
@@ -35,10 +32,8 @@ static char* to_binstr(uint64_t num)
     // 从最高有效位开始，逐位打印 '0' 或 '1'
     for (int i = start_bit; i >= 0; i--) {
         char* bit = ((num >> i) & 1) ? "1" : "0";
-        //putchar(bit);
         strcat(buf, bit);
         if ((i % 4 == 0) && (i != 0)) {
-            //putchar('_');
             strcat(buf, "_");
         }
     }

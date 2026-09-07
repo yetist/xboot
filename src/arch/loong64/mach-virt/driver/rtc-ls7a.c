@@ -15,6 +15,9 @@
 #define SYS_TOYREAD1       0x30
 #define SYS_RTCCTRL        0x40
 
+#define RTCCTRL_TEN_BIT   (1<<11) // TOY 使能
+#define RTCCTRL_EO_BIT    (1<<8)  // 32K晶振使能
+
 struct rtc_ls7a_pdata_t {
   virtual_addr_t virt;
   char * clk;
@@ -22,11 +25,14 @@ struct rtc_ls7a_pdata_t {
 
 static bool_t rtc_ls7a_settime(struct rtc_t * rtc, struct rtc_time_t * time)
 {
-  uint32_t t;
-
+  uint32_t t = 0;
   struct rtc_ls7a_pdata_t * pdat = (struct rtc_ls7a_pdata_t *)rtc->priv;
-  t = (time->second << 4) | (time->minute << 10) | (time->hour << 16);
-  t |= (time->day << 21) | (time->month << 26);
+
+  t |= (time->second << 4);
+  t |= (time->minute << 10);
+  t |= (time->hour << 16);
+  t |= (time->day << 21);
+  t |= (time->month << 26);
   write32(pdat->virt + SYS_TOYWRITE0, t);
   write32(pdat->virt + SYS_TOYWRITE1, time->year - 1900);
 
@@ -88,7 +94,7 @@ static struct device_t * rtc_ls7a_probe(struct driver_t * drv, struct dtnode_t *
 
   clk_enable(pdat->clk);
   val = read32(pdat->virt + SYS_RTCCTRL);
-  val |= (1 << 13) | (1 << 11) | (1 << 8);
+  val |= RTCCTRL_TEN_BIT | RTCCTRL_EO_BIT;
   write32(pdat->virt + SYS_RTCCTRL, val);
   if(!(dev = register_rtc(rtc, drv)))
   {

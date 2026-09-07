@@ -6,6 +6,7 @@
  */
 
 #include <xboot.h>
+#define ACPI_REG_BASE    0x100d0000
 
 static int mach_detect(struct machine_t * mach)
 {
@@ -24,10 +25,19 @@ static void mach_smpboot(struct machine_t * mach, void (*func)(void))
 
 static void mach_shutdown(struct machine_t * mach)
 {
+  virtual_addr_t virt = phys_to_virt(IO_BASE | ACPI_REG_BASE);
+
+  uint32_t v;
+
+  v = read32(virt + 0xc);
+  write32(virt + 0xc, v & 0xffffffff);
+  write32(virt + 0x14, (0x1 << 13 | 0b111 << 10));
 }
 
 static void mach_reboot(struct machine_t * mach)
 {
+  virtual_addr_t virt = phys_to_virt(IO_BASE | ACPI_REG_BASE);
+  write32(virt + 0x30, 0x1);
 }
 
 static void mach_sleep(struct machine_t * mach)

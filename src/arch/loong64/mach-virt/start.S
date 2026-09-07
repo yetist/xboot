@@ -1,14 +1,9 @@
-/*
- * start.S - Part 1: Hardware Definitions & Primary Core Reset
- * Target: LoongArch64 mach-virt bare-metal multi-core bootloader.
- */
 #include <xconfigs.h>
 #include <loong64.h>
 
 .macro clear_all_regs
-    # 使用 .irp 显式列出 1 到 31 的寄存器编号
     .irp reg, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
-        or  $r\reg, $r0, $r0
+        or  $r\reg, $zero, $zero
     .endr
 .endm
 
@@ -20,9 +15,9 @@ _start:
  * The actual reset code
  */
 reset:
-    li.d    $t0, (0x8000 << 48 | 0x1)     # UC, PLV0, 0x8000 xxxx xxxx xxxx
+    li.d    $t0, (0x8000 << 48 | 0x1)     # VSEG[63:60]=0x8000, MAT[5:4]=0, PLV0[0]=1, UC xxxx xxxx xxxx
     csrwr   $t0, LOONGARCH_CSR_DMW0
-    li.d    $t0, (0x11)                   # CA, PLV0, 0x0000 xxxx xxxx xxxx
+    li.d    $t0, (0x11)                   # VSEG[63:60]=0x0000, MAT[5:4]=1, PLV0[0]=1, CA, 0x0000 xxxx xxxx xxxx
     csrwr   $t0, LOONGARCH_CSR_DMW1
 
     # jump_to_virt_addr
@@ -32,18 +27,18 @@ reset:
     #jirl    $zero, $t0, 0xc
 
     /* Enable PG */
-    li.w    $t0, 0b10110000   # PLV[1:0]=0, IE[2]=0, PG[4]=1, DATF[6:5]=1, DATM[8:7]=1(一致可缓存)
+    li.w    $t0, 0b10110000   # PLV[1:0]=0, IE[2]=0, PG[4]=1, DATF[6:5]=1, DATM[8:7]=1(一致可缓存CC)
     csrwr   $t0, LOONGARCH_CSR_CRMD
     li.w    $t0, 0b0100       # PPLV[1:0]=0, PIE[2]=1, PWE[3]=0
     csrwr   $t0, LOONGARCH_CSR_PRMD
-    li.w    $t0, 0b0001          # FPE[0]=1, SXE[1]=0, ASXE[2]=0, BTE[3]=0
+    li.w    $t0, 0b0001       # FPE[0]=1, SXE[1]=0, ASXE[2]=0, BTE[3]=0
     csrwr   $t0, LOONGARCH_CSR_EUEN
 
     clear_all_regs
 
     /* 向CSR_EENTRY寄存器写入高位异常向量总入口地址 */
     la.pcrel $t0, vectors
-#    li.d    $t4, 0x9000000000000000
+#    li.d    $t4, (0x9000ULL << 48)
 #    or      $t0, $t0, $t4
     csrwr   $t0, LOONGARCH_CSR_EENTRY
 
@@ -158,7 +153,7 @@ vectors:
   st.d    $s8,   $sp, 31 * 8
 
   csrrd    $t0, LOONGARCH_CSR_SAVE0     # t0 is the orig sp value
-  #csrwr    $zero, LoongArch_CSR_SAVE0  # 2. 将零 ($r0) 写入 CSR
+  #csrwr    $zero, LoongArch_CSR_SAVE0  # 将零 ($zero) 写入 CSR
   csrrd    $s0, LOONGARCH_CSR_ESTAT     #
   csrrd    $t1, LOONGARCH_CSR_ERA       #
   csrrd    $t2, LOONGARCH_CSR_BADV      #
